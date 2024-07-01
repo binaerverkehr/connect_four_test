@@ -1,11 +1,18 @@
 import 'player.dart';
 
 class Board {
+  /*
+  Represents the game board.
+  */
+
   final int rows;
   final int columns;
   late List<List<Player>> grid;
 
   Board({required this.rows, required this.columns}) {
+    """
+    Initializes the board with the given number of rows and columns.
+    """;
     grid = List.generate(rows, (_) => List.filled(columns, Player.none));
   }
 
