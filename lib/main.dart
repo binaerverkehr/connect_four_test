@@ -151,17 +151,17 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Widget _buildResetButton() {
-    return ElevatedButton(
+    return TextButton.icon(
+      icon: const Icon(Icons.refresh),
+      label: Text(
+        _game.winner != null || _game.isDraw ? 'New Game' : 'Reset Game',
+      ),
       onPressed: _resetGame,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24.0),
         ),
-      ),
-      child: Text(
-        _game.winner != null || _game.isDraw ? 'New Game' : 'Reset Game',
-        style: const TextStyle(fontSize: 18),
       ),
     );
   }
