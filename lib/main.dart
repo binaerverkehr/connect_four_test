@@ -13,6 +13,7 @@ class ConnectFourApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Connect Four',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const GameScreen(),
@@ -62,15 +63,15 @@ class _GameScreenState extends State<GameScreen> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildGameStatus(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               AspectRatio(
                 aspectRatio: 7 / 6,
                 child: _buildGameBoard(),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 80),
               _buildResetButton(),
             ],
           ),
