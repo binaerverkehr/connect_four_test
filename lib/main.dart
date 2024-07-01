@@ -28,21 +28,21 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late Game game;
+  late Game _game;
 
   @override
   void initState() {
     super.initState();
-    game = Game(board: Board(rows: 6, columns: 7));
+    _resetGame();
   }
 
-  void resetGame() {
+  void _resetGame() {
     setState(() {
-      game = Game(board: Board(rows: 6, columns: 7));
+      _game = Game(board: Board(rows: 6, columns: 7));
     });
   }
 
-  Widget buildPlayerToken(Player player, double size) {
+  Widget _buildPlayerToken(Player player, double size) {
     return Container(
       width: size,
       height: size,
@@ -59,98 +59,108 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Connect Four')),
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (game.winner == null && !game.isDraw)
-                              const Text('Current Player: ', style: TextStyle(fontSize: 18)),
-                            if (game.winner != null)
-                              Text(
-                                'Player ${game.winner == Player.yellow ? "Yellow" : "Red"} wins! ',
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            if (game.isDraw)
-                              const Text(
-                                'It\'s a draw!',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            buildPlayerToken(game.winner ?? game.currentPlayer, 30),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        AspectRatio(
-                          aspectRatio: 7 / 6,
-                          child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: game.board.columns,
-                            ),
-                            itemCount: game.board.rows * game.board.columns,
-                            itemBuilder: (context, index) {
-                              int row = index ~/ game.board.columns;
-                              int col = index % game.board.columns;
-                              return GestureDetector(
-                                onTap: () {
-                                  if (game.winner == null && !game.isDraw) {
-                                    setState(() {
-                                      game.makeMove(col);
-                                    });
-                                  }
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: game.board.getCell(row, col) == Player.yellow
-                                        ? Colors.yellow
-                                        : game.board.getCell(row, col) == Player.red
-                                            ? Colors.red
-                                            : Colors.white,
-                                    border: Border.all(color: Colors.black),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ElevatedButton(
-                              onPressed: resetGame,
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                              ),
-                              child: Text(
-                                game.winner != null || game.isDraw ? 'New Game' : 'Reset Game',
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildGameStatus(),
+              const SizedBox(height: 20),
+              AspectRatio(
+                aspectRatio: 7 / 6,
+                child: _buildGameBoard(),
               ),
-            );
-          },
+              const SizedBox(height: 20),
+              _buildResetButton(),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildGameStatus() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (_game.winner == null && !_game.isDraw)
+          Row(
+            children: [
+              const Text('Current Player: ', style: TextStyle(fontSize: 18)),
+              _buildPlayerToken(_game.winner ?? _game.currentPlayer, 30),
+            ],
+          ),
+        if (_game.winner != null)
+          Row(
+            children: [
+              _buildPlayerToken(_game.winner ?? _game.currentPlayer, 30),
+              const SizedBox(width: 10),
+              const Text(
+                'wins! ',
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+        if (_game.isDraw)
+          const Text(
+            'It\'s a draw!',
+            style: TextStyle(fontSize: 18),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildGameBoard() {
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: _game.board.columns,
+      ),
+      itemCount: _game.board.rows * _game.board.columns,
+      itemBuilder: (context, index) {
+        int row = index ~/ _game.board.columns;
+        int col = index % _game.board.columns;
+        return GestureDetector(
+          onTap: () {
+            if (_game.winner == null && !_game.isDraw) {
+              setState(() {
+                _game.makeMove(col);
+              });
+            }
+          },
+          child: _buildBoardCell(row, col),
+        );
+      },
+    );
+  }
+
+  Widget _buildBoardCell(int row, int col) {
+    return Container(
+      margin: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: _game.board.getCell(row, col) == Player.yellow
+            ? Colors.yellow
+            : _game.board.getCell(row, col) == Player.red
+                ? Colors.red
+                : Colors.white,
+        border: Border.all(color: Colors.black),
+      ),
+    );
+  }
+
+  Widget _buildResetButton() {
+    return ElevatedButton(
+      onPressed: _resetGame,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+      ),
+      child: Text(
+        _game.winner != null || _game.isDraw ? 'New Game' : 'Reset Game',
+        style: const TextStyle(fontSize: 18),
       ),
     );
   }
