@@ -4,11 +4,11 @@ import 'package:connect_four_test/models/player.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const ConnectFourApp());
+  runApp(const MyApp());
 }
 
-class ConnectFourApp extends StatelessWidget {
-  const ConnectFourApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
