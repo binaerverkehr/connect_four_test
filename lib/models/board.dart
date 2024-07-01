@@ -1,3 +1,7 @@
+/*
+Board class for a Connect Four game.
+*/
+
 import 'player.dart';
 
 class Board {

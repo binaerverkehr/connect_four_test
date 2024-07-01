@@ -44,6 +44,10 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Widget _buildPlayerToken(Player player) {
+    /*
+    Builds a token with the color of the player.
+    */
+
     return Container(
       width: 30,
       height: 30,
@@ -81,6 +85,10 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Widget _buildGameStatus() {
+    /*
+    Builds the game status widget.
+    */
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -112,6 +120,10 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Widget _buildGameBoard() {
+    /*
+    Builds the game board widget.
+    */
+
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -136,6 +148,10 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Widget _buildBoardCell(int row, int col) {
+    /*
+    Builds a single cell of the game board.
+    */
+
     return Container(
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
@@ -151,6 +167,10 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Widget _buildResetButton() {
+    /*
+    Builds the reset button widget.
+    */
+
     return TextButton.icon(
       icon: const Icon(Icons.refresh),
       label: Text(

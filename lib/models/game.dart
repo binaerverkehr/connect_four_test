@@ -2,6 +2,10 @@ import 'package:connect_four_test/models/board.dart';
 import 'package:connect_four_test/models/player.dart';
 
 class Game {
+  /*
+  Represents the game state.
+  */
+
   final Board board;
   Player currentPlayer;
   Player? winner;
