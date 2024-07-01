@@ -43,10 +43,10 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-  Widget _buildPlayerToken(Player player, double size) {
+  Widget _buildPlayerToken(Player player) {
     return Container(
-      width: size,
-      height: size,
+      width: 30,
+      height: 30,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: player == Player.yellow ? Colors.yellow : Colors.red,
@@ -88,13 +88,13 @@ class _GameScreenState extends State<GameScreen> {
           Row(
             children: [
               const Text('Current Player: ', style: TextStyle(fontSize: 18)),
-              _buildPlayerToken(_game.winner ?? _game.currentPlayer, 30),
+              _buildPlayerToken(_game.winner ?? _game.currentPlayer),
             ],
           ),
         if (_game.winner != null)
           Row(
             children: [
-              _buildPlayerToken(_game.winner ?? _game.currentPlayer, 30),
+              _buildPlayerToken(_game.winner ?? _game.currentPlayer),
               const SizedBox(width: 10),
               const Text(
                 'wins! ',
