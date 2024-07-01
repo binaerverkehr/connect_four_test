@@ -15,6 +15,9 @@ class Game {
         moveCount = 0;
 
   bool makeMove(int column) {
+    """
+    Places a piece in the given column if it is a valid move.
+    """;
     if (!board.isValidMove(column) || winner != null) return false;
 
     int row = -1;
@@ -42,6 +45,9 @@ class Game {
   }
 
   bool checkWin(int row, int column) {
+    """
+    Checks if the last move resulted in a win.
+    """;
     return checkDirection(row, column, 1, 0) || // Vertical
         checkDirection(row, column, 0, 1) || // Horizontal
         checkDirection(row, column, 1, 1) || // Diagonal (/)
@@ -49,6 +55,9 @@ class Game {
   }
 
   bool checkDirection(int row, int col, int rowDelta, int colDelta) {
+    """
+    Checks if there are four pieces in a row in the given direction.
+    """;
     Player player = board.getCell(row, col);
     int count = 1;
 
